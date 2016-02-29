@@ -30,22 +30,19 @@ public class pesqProcessamento extends PesqPadrao {
         objConexaoBD.carrCamposCombo(PesqPadrao.JCBSelecao, "  * FROM PROCESSAMENTO ");
 
         Lactos = new MontaGrid(
-                " CODIGO, DTPPROCESS, CAMINHOARQ, QTDINDIVIDUOS, QTDGERACOES "
+                "  SELECT CODIGO, DTPPROCESS, CAMINHOARQ, QTDINDIVIDUOS, QTDGERACOES "
                 + "  FROM PROCESSAMENTO "
                 + " ORDER BY CODIGO");
 
         Grid.getViewport().add(Lactos, null);
 
         this.JBtExecutar.addActionListener(new ActionListener() {
-
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     ExecPesquisa("SELECT CODIGO, DTPPROCESS, CAMINHOARQ, QTDINDIVIDUOS, QTDGERACOES FROM PROCESSAMENTO ");
                     
-                } catch (SQLException ex) {
-                    Logger.getLogger(pesqProcessamento.class.getName()).log(Level.SEVERE, null, ex);
-                    
-                } catch (IOException ex) {
+                } catch (SQLException | IOException ex) {
                     Logger.getLogger(pesqProcessamento.class.getName()).log(Level.SEVERE, null, ex);
                     
                 }

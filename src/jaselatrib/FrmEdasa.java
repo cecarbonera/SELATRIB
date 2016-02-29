@@ -25,7 +25,7 @@ public class FrmEdasa extends javax.swing.JDialog {
         initComponents();
 
         //Inicialização Default dos componentes
-        InicializarComponentes();
+        InicializarComponentes();   
 
         //Setar a posição Inicial
         setLocation(5, 46);

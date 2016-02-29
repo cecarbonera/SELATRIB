@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
 
 /**
  *
@@ -29,7 +30,6 @@ public class ConexaoBD {
 
     //Método Inicializador da classe    
     public ConexaoBD() throws FileNotFoundException, IOException {
-
         //Declaração Variáveis e Objetos
         File arquivo = new File("ParamSelecaoAtributos.txt");
 
@@ -57,6 +57,7 @@ public class ConexaoBD {
                         case 3:
                             senha = linhaDados;
                             break;
+
                         default:
                             break;
 
@@ -81,7 +82,7 @@ public class ConexaoBD {
 
     }
 
-    //Conectar com o Banco de Dados
+//Conectar com o Banco de Dados
     public boolean ConectarBD() {
         //Declaração Variáveis e Objetos
         boolean bRetorno = true;
@@ -186,7 +187,7 @@ public class ConexaoBD {
         try {
             if (ConectarBD()) {
                 Statement stmt = conexaoBD.createStatement();
-                ResultSet rs = stmt.executeQuery("Select " + qry);
+                ResultSet rs = stmt.executeQuery(qry);
                 ResultSetMetaData rsmd = rs.getMetaData();
 
                 int nCol = rsmd.getColumnCount();
@@ -222,7 +223,7 @@ public class ConexaoBD {
             if (ConectarBD()) {
                 Statement stmt = conexaoBD.createStatement();
 
-                ResultSet rs = stmt.executeQuery("SELECT " + qry);
+                ResultSet rs = stmt.executeQuery(qry);
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int nCol = rsmd.getColumnCount();
 

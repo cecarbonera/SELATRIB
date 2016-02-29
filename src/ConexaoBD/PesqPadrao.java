@@ -37,13 +37,13 @@ public class PesqPadrao extends javax.swing.JDialog {
             lSQL += " WHERE " + JCBSelecao.getSelectedItem() + " LIKE '%" + JTFDescr.getText() + "'";
 
         }
-
+                
         MontaGrid Lactos = new MontaGrid(lSQL);
 
         Grid.getViewport().add(Lactos, null);
         
-        this.getContentPane().validate();
-        this.getContentPane().repaint();
+        //this.getContentPane().validate();
+        //this.getContentPane().repaint();
 
     }
     
@@ -153,6 +153,11 @@ public class PesqPadrao extends javax.swing.JDialog {
 
         JBtExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Pesquisar16X16.png"))); // NOI18N
         JBtExecutar.setText("Pesquisar");
+        JBtExecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBtExecutarActionPerformed(evt);
+            }
+        });
 
         JBtSelec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Processar16x16.gif"))); // NOI18N
         JBtSelec.setText("Selecionar");
@@ -209,6 +214,10 @@ public class PesqPadrao extends javax.swing.JDialog {
         dispose();
 
     }//GEN-LAST:event_JBtFecharActionPerformed
+
+    private void JBtExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBtExecutarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JBtExecutarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JScrollPane Grid;
