@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import weka.core.Instances;
 
@@ -25,7 +26,7 @@ public class FrmEdasa extends javax.swing.JDialog {
         initComponents();
 
         //Inicialização Default dos componentes
-        InicializarComponentes();   
+        InicializarComponentes();
 
         //Setar a posição Inicial
         setLocation(5, 46);
@@ -62,7 +63,7 @@ public class FrmEdasa extends javax.swing.JDialog {
         txtArquivo = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDados = new javax.swing.JTable();
+        tblAtributos = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jspGeracoes = new javax.swing.JSpinner();
@@ -199,8 +200,8 @@ public class FrmEdasa extends javax.swing.JDialog {
             }
         });
 
-        tblDados.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        tblDados.setModel(new javax.swing.table.DefaultTableModel(
+        tblAtributos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tblAtributos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -211,7 +212,7 @@ public class FrmEdasa extends javax.swing.JDialog {
 
             }
         ));
-        jScrollPane1.setViewportView(tblDados);
+        jScrollPane1.setViewportView(tblAtributos);
 
         jLabel3.setText("Categorização dos Atributos");
 
@@ -329,6 +330,8 @@ public class FrmEdasa extends javax.swing.JDialog {
                 //Declaração Variáveis e Objetos
                 Instances dados = new Instances(new Processamento(txtArquivo.getText()).lerArquivoDados());
                 String colunas[] = new String[dados.numAttributes()];
+                String[][] matrizDados = new String[Integer.parseInt(jspGeracoes.getValue().toString())][dados.numAttributes()];
+
                 EdaSa objEdasa = new EdaSa();
                 int nroGeracoes = 1;
 
@@ -343,19 +346,28 @@ public class FrmEdasa extends javax.swing.JDialog {
 
                     }
 
-                    //Setar o modelo de dados
-                    tblDados.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{}, colunas));
-
                     //Troca do cursor para Aguardando
                     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
                     //Geração da População Inicial
-                    objEdasa.GerarPopulacaoInicial(dados, 0, (int) jspQuantidade.getValue(), tblDados);
+                    objEdasa.GerarPopulacaoInicial(dados, 0, (int) jspQuantidade.getValue(), matrizDados);
+
+                    //Adicionar as colunas e os dados
+                    tblAtributos.setModel(new javax.swing.table.DefaultTableModel(matrizDados, colunas));
+
+                    //Formatar Colunas da Tabela de Atributos
+                    formatarColunasTabAtributos(tblAtributos);
 
                     //Enquanto puder processar
                     while (nroGeracoes < (int) jspGeracoes.getValue()) {
                         //Gerar População
-                        objEdasa.GerarPopulacao(dados, nroGeracoes, (int) jspQuantidade.getValue(), tblDados);
+                        objEdasa.GerarPopulacao(dados, nroGeracoes, (int) jspQuantidade.getValue(), matrizDados);
+
+                        //Adicionar as colunas e os dados
+                        tblAtributos.setModel(new javax.swing.table.DefaultTableModel(matrizDados, colunas));
+
+                        //Formatar Colunas da Tabela de Atributos
+                        formatarColunasTabAtributos(tblAtributos);
 
                         //Atualizar a posição
                         nroGeracoes += 1;
@@ -429,19 +441,19 @@ public class FrmEdasa extends javax.swing.JDialog {
                     //Tentar Gravar o Registro na tabela Processamento
                     if (objtabProces.Inserir(objtabProces) == 0) {
                         //Percorrer todas as linhas da tabela
-                        for (int iLinha = 0; iLinha < tblDados.getRowCount(); iLinha++) {
+                        for (int iLinha = 0; iLinha < tblAtributos.getRowCount(); iLinha++) {
                             //Percorrer todas as colunas da tabela
-                            for (int iColuna = 0; iColuna < tblDados.getColumnCount(); iColuna++) {
+                            for (int iColuna = 0; iColuna < tblAtributos.getColumnCount(); iColuna++) {
                                 //Se não for a primeira coluna(1° Geração, 2° Geração, 3° Geração...)
                                 if (iColuna > 0) {
                                     //Inicializar o Objeto
                                     objtabAtrib = new tabAtributos(
                                             Integer.parseInt(txtCodigo.getText()),
                                             iColuna,
-                                            tblDados.getModel().getColumnName(iColuna),
+                                            tblAtributos.getModel().getColumnName(iColuna),
                                             null,
                                             null,
-                                            Double.parseDouble(tblDados.getModel().getValueAt(iLinha, iColuna).toString().replace(",", ".")),
+                                            Double.parseDouble(tblAtributos.getModel().getValueAt(iLinha, iColuna).toString().replace(",", ".")),
                                             'S',
                                             iLinha);
 
@@ -467,9 +479,9 @@ public class FrmEdasa extends javax.swing.JDialog {
 
         } catch (IOException ex) {
             Logger.getLogger(FrmEdasa.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
-        
+
     }//GEN-LAST:event_jbSalvarjButton1ActionPerformed
 
     private void jbImprimirjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbImprimirjButton1ActionPerformed
@@ -506,7 +518,7 @@ public class FrmEdasa extends javax.swing.JDialog {
 
         } catch (IOException ex) {
             Logger.getLogger(FrmEdasa.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
 
     }//GEN-LAST:event_jbConsultarjButton1ActionPerformed
@@ -581,11 +593,14 @@ public class FrmEdasa extends javax.swing.JDialog {
         jspQuantidade.setValue(1000);
         txtArquivo.setText("");
 
+        //Controlar os Botões Inicialmente
+        ControlarBotoes("I");
+
     }
 
     private void ConsultarInviduosGeracao(String codigo) throws SQLException, IOException {
         //Limpar os dados
-        DefaultTableModel dados = (DefaultTableModel) tblDados.getModel();
+        DefaultTableModel dados = (DefaultTableModel) tblAtributos.getModel();
 
         //remover todas as linhas da tabela (Somente Dados)
         for (int i = dados.getRowCount() - 1; i >= 0; i--) {
@@ -648,17 +663,40 @@ public class FrmEdasa extends javax.swing.JDialog {
 
                 }
 
-            }          
+            }
 
             //Adicionar as colunas
-            tblDados.setModel(new javax.swing.table.DefaultTableModel(dadosConsulta, colunas));
+            tblAtributos.setModel(new javax.swing.table.DefaultTableModel(dadosConsulta, colunas));
 
             //Fomatar as colunas
-            objEdasa.formatarColunasTabAtributos(tblDados);
+            formatarColunasTabAtributos(tblAtributos);
 
         }
 
     }
+
+    //Formatar a Tabela de Atributos
+    public void formatarColunasTabAtributos(JTable tblAtributos) {
+        //Remover todas as linhas
+        DefaultTableModel dtModelo = (DefaultTableModel) tblAtributos.getModel();
+        int iColuna = 0;
+
+        while (dtModelo.getColumnCount() > iColuna) {
+            //Setar o tamanho da coluna
+            tblAtributos.getColumnModel().getColumn(iColuna).setPreferredWidth(iColuna == 0 ? 90 : 45);
+
+            //Atualizar o Contatdor
+            iColuna += 1;
+
+        }
+
+        //Setar para usar o scroll
+        tblAtributos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tblAtributos.revalidate();
+        tblAtributos.repaint();
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
@@ -678,7 +716,7 @@ public class FrmEdasa extends javax.swing.JDialog {
     private javax.swing.JSpinner jspGeracoes;
     private javax.swing.JSpinner jspQuantidade;
     private javax.swing.JLabel lblMellhorIndividuo;
-    private javax.swing.JTable tblDados;
+    private javax.swing.JTable tblAtributos;
     private javax.swing.JTextField txtArquivo;
     private javax.swing.JTextField txtCodigo;
     // End of variables declaration//GEN-END:variables

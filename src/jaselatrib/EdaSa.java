@@ -43,7 +43,7 @@ public class EdaSa {
     // 4° Selecionar 50% dos mellhores indivíduos(Menor Erro)
     // 5° Calcular o vetor das probabilidades E imprimir os valores       
     // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public void GerarPopulacaoInicial(Instances dados, int geracao, int quantidade, JTable tblAtributos) throws Exception {
+    public void GerarPopulacaoInicial(Instances dados, int geracao, int quantidade, String[][] tblAtributos) throws Exception {
         try {
             //Declaração Variáveis e Objetos
             populacao = new Individuo[quantidade];
@@ -67,9 +67,7 @@ public class EdaSa {
 
             //Calcular a probabilidade de cada posição
             CalcularVetorProbabilidades(qtdCromossomos, geracao, tblAtributos);
-
-            //Formatar Colunas da Tabela de Atributos
-            formatarColunasTabAtributos(tblAtributos);
+           
 
         } catch (Exception e) {
             throw e;
@@ -163,7 +161,7 @@ public class EdaSa {
     }
 
     //Geração das Populações após a População Inicial
-    public void GerarPopulacao(Instances dados, int geracao, int quantidade, JTable tblAtributos) {
+    public void GerarPopulacao(Instances dados, int geracao, int quantidade, String[][] tblAtributos) {
         try {
             //Declaração Variáveis e Objetos
             int qtdCromossomos = dados.numAttributes() - 1;
@@ -196,7 +194,8 @@ public class EdaSa {
     }
 
     //Calcular vetor de probabilidades
-    public void CalcularVetorProbabilidades(int qtdCromossomos, int geracao, JTable tblAtributos) {
+    //public void CalcularVetorProbabilidades(int qtdCromossomos, int geracao, JTable tblAtributos) {
+    public void CalcularVetorProbabilidades(int qtdCromossomos, int geracao, String[][] tblAtributos) {
         //Inicializar o vetor de probabilidade
         probabilidades = new double[qtdCromossomos];
 
@@ -223,45 +222,28 @@ public class EdaSa {
     }
 
     //Inserir o registro no Grid
-    public void imprimirVetorProbabilidades(int geracao, JTable tblAtributos) {
+    public void imprimirVetorProbabilidades(int geracao, String[][] tblAtributos) {
         //Declaração Variáveis e Objetos
-        DefaultTableModel dados = (DefaultTableModel) tblAtributos.getModel();
-        Vector linha = new Vector();
+        //DefaultTableModel dados = (DefaultTableModel) tblAtributos.getModel();
+        //Vector linha = new Vector();
 
         //Setar a Geração Processada
-        linha.add(0, geracao == 0 ? "Inicial" : geracao + "° Geração");
+        //linha.add(0, geracao == 0 ? "Inicial" : geracao + "° Geração");
+        tblAtributos[geracao][0] = (geracao == 0 ? "Inicial" : geracao + "° Geração");
 
         //Percorrer os atributos
         for (int i = 0; i < probabilidades.length; i++) {
             //setar a probabilidade da coluna
-            linha.add(i + 1, new DecimalFormat("##0.00").format(probabilidades[i]));
+            //linha.add(i + 1, new DecimalFormat("##0.00").format(probabilidades[i]));
+            tblAtributos[geracao][i + 1] = new DecimalFormat("##0.00").format(probabilidades[i]).toString();
 
         }
 
         //Adicionar a linhas
-        dados.addRow(linha);
+        //dados.addRow(linha);
 
     }
 
-    //Formatar a Tabela de Atributos
-    public void formatarColunasTabAtributos(JTable tblAtributos) {
-        //Remover todas as linhas
-        DefaultTableModel dtModelo = (DefaultTableModel) tblAtributos.getModel();
-        int iColuna = 0;
-
-        while (dtModelo.getColumnCount() > iColuna) {
-            //Setar o tamanho da coluna
-            tblAtributos.getColumnModel().getColumn(iColuna).setPreferredWidth(iColuna == 0 ? 90 : 45);
-
-            //Atualizar o Contatdor
-            iColuna += 1;
-
-        }
-
-        //Setar para usar o scroll
-        tblAtributos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-    }
     // </editor-fold>    
 
 }

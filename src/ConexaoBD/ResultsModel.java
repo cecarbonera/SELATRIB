@@ -5,7 +5,7 @@ import java.util.*;
 import javax.swing.table.*;
 
 public class ResultsModel extends AbstractTableModel {
-
+    //Declaração Variáveis e Objetos
     private String[] colunas;
     public Vector Linhas;
 
@@ -14,9 +14,10 @@ public class ResultsModel extends AbstractTableModel {
         ConexaoBD objConexaoBD = new ConexaoBD();
         
         try {          
-            
+            //Conectar ao Banco de Dados
             objConexaoBD.ConectarBD();
 
+            //Carregar Colunas e Dados
             colunas = objConexaoBD.carrNomes(SQL);
             Linhas = objConexaoBD.carrVetor(SQL);
 

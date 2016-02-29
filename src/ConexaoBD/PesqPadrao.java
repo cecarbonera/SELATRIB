@@ -42,8 +42,8 @@ public class PesqPadrao extends javax.swing.JDialog {
 
         Grid.getViewport().add(Lactos, null);
         
-        //this.getContentPane().validate();
-        //this.getContentPane().repaint();
+        this.getContentPane().validate();
+        this.getContentPane().repaint();
 
     }
     
