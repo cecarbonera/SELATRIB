@@ -1,34 +1,32 @@
-package jaselatrib;
+package Classes;
 
-import ConexaoBD.tabAtributos;
+import Classes.ClsIndividuo;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.core.Instances;
 import weka.filters.unsupervised.attribute.Remove;
 
-public class EdaSa {
+public class ClsEdaSa {
 
     //<editor-fold defaultstate="collapsed" desc="1° Configuração das Bases de Dados e atributos iniciais">    	    
     //Arquivo com Atributos Numéricos
     public static final int _NroFolds = 10;
-    public static final jaselatrib.MersenneTwister _MT = new jaselatrib.MersenneTwister();
-    public static Individuo[] populacao;
+    public static final Classes.MersenneTwister _MT = new Classes.MersenneTwister();
+    public static ClsIndividuo[] populacao;
 
-    private static Individuo[] melhorPopulacao;
+    private static ClsIndividuo[] melhorPopulacao;
     private static double[] probabilidades;
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="2° Definição do Método Inicializador da Classe e Demais Métodos">
-    public EdaSa() {
+    public ClsEdaSa() {
 
     }
     // </editor-fold>
@@ -46,13 +44,13 @@ public class EdaSa {
     public void GerarPopulacaoInicial(Instances dados, int geracao, int quantidade, String[][] tblAtributos) throws Exception {
         try {
             //Declaração Variáveis e Objetos
-            populacao = new Individuo[quantidade];
+            populacao = new ClsIndividuo[quantidade];
             int qtdCromossomos = dados.numAttributes() - 1;
 
             //Inicializar a população (pelo tamanho definido)
             for (int i = 0; i < quantidade; i++) {
                 //Inicialização do Objeto
-                populacao[i] = new Individuo(qtdCromossomos);
+                populacao[i] = new ClsIndividuo(qtdCromossomos);
 
                 //Geração da população com 50% de probabilidade
                 populacao[i].CromossomosRandomicos(0.5);
@@ -77,14 +75,14 @@ public class EdaSa {
     }
 
     //Calcular o Fitness da População (Utilizando Classificador definido)
-    public void CalcularFitness(Individuo[] Individuos, int nroAtribs, Instances dados) throws Exception {
+    public void CalcularFitness(ClsIndividuo[] Individuos, int nroAtribs, Instances dados) throws Exception {
         try {
             //Declaração variáveis e atributos
             NaiveBayes nb = new NaiveBayes();
             Remove rm;
 
             //Percorrer todos os indivíduos
-            for (Individuo Individuo : Individuos) {
+            for (ClsIndividuo Individuo : Individuos) {
                 //Declaração variáveis e Inicializações
                 rm = new Remove();
                 String regs = "";
@@ -129,15 +127,15 @@ public class EdaSa {
     }
 
     //Encontrar os 50% melhores indivíduos da população
-    public Individuo[] melhorPopulacao(int nroCromossomos, int quantidade) {
+    public ClsIndividuo[] melhorPopulacao(int nroCromossomos, int quantidade) {
         //Declaração Variáveis e Objetos
-        Individuo[] bestPopulation = new Individuo[quantidade / 2];
-        List<Individuo> dados = new ArrayList<>();
+        ClsIndividuo[] bestPopulation = new ClsIndividuo[quantidade / 2];
+        List<ClsIndividuo> dados = new ArrayList<>();
 
         //Percorrer todos os indivíduos
-        for (Individuo individuo : populacao) {
+        for (ClsIndividuo individuo : populacao) {
             //Adicionar o Indivíduo
-            dados.add(new Individuo(individuo.getCromossomo(), individuo.getFitnessValue()));
+            dados.add(new ClsIndividuo(individuo.getCromossomo(), individuo.getFitnessValue()));
 
         }
 
@@ -147,7 +145,7 @@ public class EdaSa {
         //Percorrer o vetor e adicionar os melhores indivíduos (50% deles)
         for (int i = 0; i < quantidade / 2; i++) {
             //Alocar memória p/ o Objeto
-            bestPopulation[i] = new Individuo(dados.get(i).getCromossomo().length);
+            bestPopulation[i] = new ClsIndividuo(dados.get(i).getCromossomo().length);
 
             //Atribuições das propriedades
             bestPopulation[i].setCromossomo(dados.get(i).getCromossomo());
@@ -165,12 +163,12 @@ public class EdaSa {
         try {
             //Declaração Variáveis e Objetos
             int qtdCromossomos = dados.numAttributes() - 1;
-            populacao = new Individuo[quantidade];
+            populacao = new ClsIndividuo[quantidade];
 
             //Inicializar a população (pelo tamanho definido)
             for (int i = 0; i < quantidade; i++) {
                 //Inicialização do Objeto
-                populacao[i] = new Individuo(qtdCromossomos);
+                populacao[i] = new ClsIndividuo(qtdCromossomos);
 
                 //Geração da população tendo como base o vetor de probabilidades
                 populacao[i].CromossomosRandomicos(probabilidades);
@@ -205,7 +203,7 @@ public class EdaSa {
             double percentual = 0;
 
             //Percorre os cromossomos existentes na posição "j" e totaliza a valor(1 - Válido / 0 - Inválido)
-            for (Individuo individuo : melhorPopulacao) {
+            for (ClsIndividuo individuo : melhorPopulacao) {
                 //Totalizar o Indivíduo
                 percentual += individuo.getCromossomo(j);
 

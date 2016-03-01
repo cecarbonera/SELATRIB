@@ -1,4 +1,4 @@
-package jaselatrib;
+package Classes;
 
 import java.io.*;
 public strictfp class MersenneTwister extends java.util.Random implements Serializable, Cloneable {

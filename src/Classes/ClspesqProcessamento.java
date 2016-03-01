@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package jaselatrib;
+package Classes;
 
 import ConexaoBD.*;
 import ConexaoBD.MontaGrid;
@@ -14,13 +9,13 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class pesqProcessamento extends PesqPadrao {
+public class ClspesqProcessamento extends PesqPadrao {
 
     //Declaração Variáveis e Objetos
     private final MontaGrid Lactos;
     public String rsCodProc = "";
 
-    public pesqProcessamento() throws SQLException, IOException {
+    public ClspesqProcessamento() throws SQLException, IOException {
         super();
         ConexaoBD objConexaoBD = new ConexaoBD();
 
@@ -43,7 +38,7 @@ public class pesqProcessamento extends PesqPadrao {
                     ExecPesquisa("SELECT CODIGO, DTPPROCESS, CAMINHOARQ, QTDINDIVIDUOS, QTDGERACOES FROM PROCESSAMENTO ");
                     
                 } catch (SQLException | IOException ex) {
-                    Logger.getLogger(pesqProcessamento.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ClspesqProcessamento.class.getName()).log(Level.SEVERE, null, ex);
                     
                 }
                 

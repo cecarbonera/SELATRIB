@@ -1,6 +1,6 @@
-package jaselatrib;
+package Classes;
 
-public class Individuo implements Comparable<Individuo> {
+public class ClsIndividuo implements Comparable<ClsIndividuo> {
 
     //Propriedades da classe    
 
@@ -8,14 +8,14 @@ public class Individuo implements Comparable<Individuo> {
     private double fitnessValor;
 
     //Método inicializador
-    public Individuo(int tamanho) {
+    public ClsIndividuo(int tamanho) {
         //Definir o tamanho do vetor
         cromossomos = new int[tamanho];
 
     }
 
     //Método inicializador
-    public Individuo(int[] cromossomos, double fitnessValor) {
+    public ClsIndividuo(int[] cromossomos, double fitnessValor) {
         this.cromossomos = cromossomos;
         this.fitnessValor = fitnessValor;
     }
@@ -56,7 +56,7 @@ public class Individuo implements Comparable<Individuo> {
         //Percorrer o tamanho do Vetor
         for (int iPos = 0; iPos < this.cromossomos.length; iPos++) {
             //Setar Randomicamente o % de probabilidade
-            this.setCromossomo(iPos, EdaSa._MT.nextBoolean(probabilidade) ? 1 : 0);
+            this.setCromossomo(iPos, ClsEdaSa._MT.nextBoolean(probabilidade) ? 1 : 0);
 
         }
 
@@ -67,7 +67,7 @@ public class Individuo implements Comparable<Individuo> {
         //Percorrer o tamanho do Vetor
         for (int iPos = 0; iPos < this.cromossomos.length; iPos++) {
             //Setar Randomicamente o % de probabilidade
-            this.setCromossomo(iPos, EdaSa._MT.nextBoolean(probabilidades[iPos]) ? 1 : 0);
+            this.setCromossomo(iPos, ClsEdaSa._MT.nextBoolean(probabilidades[iPos]) ? 1 : 0);
 
         }
 
@@ -90,7 +90,7 @@ public class Individuo implements Comparable<Individuo> {
 
     //<editor-fold defaultstate="collapsed" desc="3° Definição Métodos de Ordenação">
     @Override
-    public int compareTo(Individuo o) {
+    public int compareTo(ClsIndividuo o) {
         return this.fitnessValor == o.getFitnessValue() ? 0 : this.fitnessValor > o.getFitnessValue() ? 1 : -1;
 
     }

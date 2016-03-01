@@ -1,9 +1,9 @@
-package jaselatrib;
+package Classes;
 
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 
-public class Processamento {
+public class ClsProcessamento {
 
     //<editor-fold defaultstate="collapsed" desc="Declaração Atributos e Método(s) Construtor(es) da Classe">    
     //Declaração de objetos privados
@@ -20,18 +20,18 @@ public class Processamento {
         this._caminhoDados = caminho;
     }
 
-    public Processamento(String local) {
+    public ClsProcessamento(String local) {
         //Inicialização dos atributos
         this._caminhoDados = local;
 
     }
 
-    public Processamento() {
+    public ClsProcessamento() {
 
     }
     //</editor-fold>        
 
-    //<editor-fold defaultstate="collapsed" desc="Métodos de Processamento Diversos">        
+    //<editor-fold defaultstate="collapsed" desc="Métodos de ClsProcessamento Diversos">        
     //Leitura do Arquivo
     public Instances lerArquivoDados() {
         //Declaração Variáveis e Objetos

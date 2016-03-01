@@ -1,4 +1,4 @@
-package jaselatrib;
+package SelAtrib;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,10 +13,15 @@ public class FrmParametros extends javax.swing.JDialog {
     public FrmParametros(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setTitle("Seleção de Atributos - Parâmetros Sistema");
+        //Setar o título
+        setTitle("Manutenção Parâmetros do Sistema");
+        
+        //Setar modal
         setModal(true);
-        setLocation(100, 200);
-
+        
+        //Tentar Centralizar
+        setLocationRelativeTo(null);
+        
         //1° Linha - Caminho do Banco de Dados
         //2° Linha - Usuário do Banco de Dados
         //3° Linha - Senha do Banco de Dados 
@@ -108,7 +113,7 @@ public class FrmParametros extends javax.swing.JDialog {
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
-        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Salvar16X16.png"))); // NOI18N
+        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Salvar16X16.png"))); // NOI18N
         jbSalvar.setText("Salvar");
         jbSalvar.setToolTipText("Salvar Priocessamento");
         jbSalvar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -125,7 +130,7 @@ public class FrmParametros extends javax.swing.JDialog {
         });
         jToolBar2.add(jbSalvar);
 
-        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Sair16X16.png"))); // NOI18N
+        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Sair16X16.png"))); // NOI18N
         jbSair.setText("Sair");
         jbSair.setToolTipText("Sair da Tela");
         jbSair.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -227,7 +232,7 @@ public class FrmParametros extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                 .addGap(3, 3, 3))
         );
 
@@ -312,7 +317,7 @@ public class FrmParametros extends javax.swing.JDialog {
         diretorios.showSaveDialog(null);
 
         //Setar o diretorio
-        txtDiretorio.setText(diretorios.getCurrentDirectory().toString());
+        txtDiretorio.setText(diretorios.getSelectedFile().getPath());
 
     }//GEN-LAST:event_jButton4ActionPerformed
     

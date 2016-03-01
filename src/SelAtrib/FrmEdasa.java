@@ -1,9 +1,15 @@
-package jaselatrib;
+package SelAtrib;
 
+import Classes.ClsEdaSa;
+import Classes.ClsProcessamento;
+import Classes.ClspesqProcessamento;
+import Classes.ClsIndividuo;
 import ConexaoBD.tabAtributos;
 import ConexaoBD.tabProcessamento;
 import java.awt.Cursor;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -28,11 +34,14 @@ public class FrmEdasa extends javax.swing.JDialog {
         //Inicialização Default dos componentes
         InicializarComponentes();
 
-        //Setar a posição Inicial
-        setLocation(5, 46);
+        //Setar o título
+        this.setTitle("EDASA - Algoritmo de Estimativa de Distribuição p/ Seleção de Atributos");
 
-        //Setar a Janela como Modal
+        //Setar modal
         setModal(true);
+
+        //Tentar Centralizar
+        setLocationRelativeTo(null);
 
     }
 
@@ -54,7 +63,6 @@ public class FrmEdasa extends javax.swing.JDialog {
         jbSalvar = new javax.swing.JButton();
         jbImprimir = new javax.swing.JButton();
         jbConsultar = new javax.swing.JButton();
-        jbListagem = new javax.swing.JButton();
         jbSair = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -77,10 +85,9 @@ public class FrmEdasa extends javax.swing.JDialog {
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
-        jbProcessar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Processar16x16.gif"))); // NOI18N
-        jbProcessar.setMnemonic('P');
+        jbProcessar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Processar16x16.gif"))); // NOI18N
         jbProcessar.setText("Processar");
-        jbProcessar.setToolTipText("Iniciar Processamento Processamento");
+        jbProcessar.setToolTipText("Iniciar Processamento dos Atributos");
         jbProcessar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jbProcessar.setFocusable(false);
         jbProcessar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -95,9 +102,9 @@ public class FrmEdasa extends javax.swing.JDialog {
         });
         jToolBar2.add(jbProcessar);
 
-        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Salvar16X16.png"))); // NOI18N
+        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Salvar16X16.png"))); // NOI18N
         jbSalvar.setText("Salvar");
-        jbSalvar.setToolTipText("Salvar Priocessamento");
+        jbSalvar.setToolTipText("Salvar Processamento dos Dados");
         jbSalvar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jbSalvar.setFocusable(false);
         jbSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -112,7 +119,7 @@ public class FrmEdasa extends javax.swing.JDialog {
         });
         jToolBar2.add(jbSalvar);
 
-        jbImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Imprimir16X16.png"))); // NOI18N
+        jbImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Imprimir16X16.png"))); // NOI18N
         jbImprimir.setMnemonic('P');
         jbImprimir.setText("Imprimir");
         jbImprimir.setToolTipText("Imprimir Relatório do Resultado do Processamento");
@@ -130,10 +137,10 @@ public class FrmEdasa extends javax.swing.JDialog {
         });
         jToolBar2.add(jbImprimir);
 
-        jbConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Pesquisar16X16.png"))); // NOI18N
+        jbConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Pesquisar16X16.png"))); // NOI18N
         jbConsultar.setMnemonic('P');
         jbConsultar.setText("Consultar");
-        jbConsultar.setToolTipText("Consultar Processamentos Efetuados");
+        jbConsultar.setToolTipText("Consultar Processamentos/Atributos Realizados");
         jbConsultar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jbConsultar.setFocusable(false);
         jbConsultar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -148,24 +155,7 @@ public class FrmEdasa extends javax.swing.JDialog {
         });
         jToolBar2.add(jbConsultar);
 
-        jbListagem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/ListCompl16X16.png"))); // NOI18N
-        jbListagem.setText("Listagem");
-        jbListagem.setToolTipText("Listagem Completa de Todo Processamento");
-        jbListagem.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jbListagem.setFocusable(false);
-        jbListagem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jbListagem.setMaximumSize(new java.awt.Dimension(70, 45));
-        jbListagem.setMinimumSize(new java.awt.Dimension(70, 45));
-        jbListagem.setPreferredSize(new java.awt.Dimension(70, 45));
-        jbListagem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jbListagem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbListagemActionPerformed(evt);
-            }
-        });
-        jToolBar2.add(jbListagem);
-
-        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Sair16X16.png"))); // NOI18N
+        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Sair16X16.png"))); // NOI18N
         jbSair.setText("Sair");
         jbSair.setToolTipText("Sair da Tela");
         jbSair.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -227,36 +217,38 @@ public class FrmEdasa extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(10, 10, 10)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtArquivo)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jspGeracoes, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(46, 46, 46)
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jspQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblMellhorIndividuo)))
+                                        .addComponent(txtArquivo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(jspGeracoes, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(46, 46, 46)
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jspQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(0, 656, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblMellhorIndividuo))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1031, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +290,7 @@ public class FrmEdasa extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
         );
 
         pack();
@@ -328,11 +320,11 @@ public class FrmEdasa extends javax.swing.JDialog {
             if (JOptionPane.showConfirmDialog(null, "Confirma o processamento dos Atributos ?",
                     "Atenção", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 //Declaração Variáveis e Objetos
-                Instances dados = new Instances(new Processamento(txtArquivo.getText()).lerArquivoDados());
+                Instances dados = new Instances(new ClsProcessamento(txtArquivo.getText()).lerArquivoDados());
                 String colunas[] = new String[dados.numAttributes()];
                 String[][] matrizDados = new String[Integer.parseInt(jspGeracoes.getValue().toString())][dados.numAttributes()];
 
-                EdaSa objEdasa = new EdaSa();
+                ClsEdaSa objEdasa = new ClsEdaSa();
                 int nroGeracoes = 1;
 
                 try {
@@ -375,20 +367,20 @@ public class FrmEdasa extends javax.swing.JDialog {
                     }
 
                     //Calcular a Média do Melhor indivíduo de todas as gerações, para dizer a eficiência do algoritmo(em parceiria com o método qualificador utilizado
-                    dados.stratify(EdaSa._NroFolds);
+                    dados.stratify(ClsEdaSa._NroFolds);
 
                     //Percorrer os folds
-                    for (int i = 0; i < EdaSa._NroFolds; i++) {
+                    for (int nFolds = 0; nFolds < ClsEdaSa._NroFolds; nFolds++) {
                         //Definir respectivamente as "Divisões" dos Folds
-                        Instances treinamento = dados.trainCV(EdaSa._NroFolds, i);  //Pegar O COMPLEMENTO da divisão(90% DOS DADOS - Dados Complementares)
-                        Individuo[] dadosTemp = new Individuo[1];
+                        Instances treinamento = dados.trainCV(ClsEdaSa._NroFolds, nFolds);  //Pegar O COMPLEMENTO da divisão(90% DOS DADOS - Dados Complementares)
+                        ClsIndividuo[] dadosTemp = new ClsIndividuo[1];
 
                         //Adicionar o registro
-                        dadosTemp[0] = EdaSa.populacao[0];
+                        dadosTemp[0] = ClsEdaSa.populacao[0];
 
                         try {
                             //Calcular o Fitness dos Inidivíduos
-                            objEdasa.CalcularFitness(dadosTemp, EdaSa.populacao[0].getTamCromoss(), treinamento);
+                            objEdasa.CalcularFitness(dadosTemp, ClsEdaSa.populacao[0].getTamCromoss(), treinamento);
 
                         } catch (Exception ex) {
                             //  Logger.getLogger(jifEdasa.class.getName()).log(Level.SEVERE, null, ex);
@@ -436,9 +428,9 @@ public class FrmEdasa extends javax.swing.JDialog {
 
             //Excluri todos os atributos
             if (objtabAtrib.ExcluirPorCodigo(Integer.parseInt(txtCodigo.getText())) == 0) {
-                //Se conseguiu Excluir o registro da tabela Processamento e por cascata exclui da tabela Atributos
+                //Se conseguiu Excluir o registro da tabeClsProcessamentonto e por cascata exclui da tabela Atributos
                 if (objtabProces.Excluir(Integer.parseInt(txtCodigo.getText())) == 0) {
-                    //Tentar Gravar o Registro na tabela Processamento
+                    //Tentar Gravar o Registro na tClsProcessamentoamento
                     if (objtabProces.Inserir(objtabProces) == 0) {
                         //Percorrer todas as linhas da tabela
                         for (int iLinha = 0; iLinha < tblAtributos.getRowCount(); iLinha++) {
@@ -491,7 +483,7 @@ public class FrmEdasa extends javax.swing.JDialog {
     private void jbConsultarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConsultarjButton1ActionPerformed
         //Declaração Variáveis e Objetos        
         try {
-            pesqProcessamento pqProcess = new pesqProcessamento();
+            ClspesqProcessamento pqProcess = new ClspesqProcessamento();
 
             //Tronar a Tela visível
             pqProcess.setVisible(true);
@@ -523,10 +515,6 @@ public class FrmEdasa extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jbConsultarjButton1ActionPerformed
 
-    private void jbListagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbListagemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbListagemActionPerformed
-
     private void jbSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSairActionPerformed
         //Liberar a Tela
         dispose();
@@ -540,14 +528,19 @@ public class FrmEdasa extends javax.swing.JDialog {
         //Filtar modo Arquivos
         file.setFileSelectionMode(JFileChooser.FILES_ONLY);
         file.setDialogTitle("Selecione um arquivo");
-        file.setCurrentDirectory(new File("C:\\SELATRIB\\Arquivos"));
+
+        //Atribuir o local do diretório dos arquivos
+        file.setCurrentDirectory(new File(leituraParamentros()));
 
         //Inicialização
         txtArquivo.setText("");
 
+        //Se selecionou
         if (file.showSaveDialog(null) != 1) {
             //Declaração Variáveis e Objetos
             File arquivo = file.getSelectedFile();
+
+            //Pegar o caminho do Arquivo
             txtArquivo.setText(arquivo.getPath());
 
         }
@@ -561,21 +554,18 @@ public class FrmEdasa extends javax.swing.JDialog {
                 jbProcessar.setEnabled(true);
                 jbSalvar.setEnabled(false);
                 jbImprimir.setVisible(false);
-                jbListagem.setEnabled(false);
                 jbConsultar.setEnabled(true);
                 break;
             case "P":
                 jbProcessar.setEnabled(false);
                 jbSalvar.setEnabled(true);
                 jbImprimir.setEnabled(true);
-                jbListagem.setEnabled(true);
                 jbConsultar.setEnabled(false);
                 break;
             case "C":
                 jbProcessar.setEnabled(false);
                 jbSalvar.setEnabled(false);
                 jbImprimir.setEnabled(false);
-                jbListagem.setEnabled(false);
                 jbConsultar.setEnabled(false);
                 break;
 
@@ -584,9 +574,6 @@ public class FrmEdasa extends javax.swing.JDialog {
     }
 
     private void InicializarComponentes() throws SQLException, IOException {
-        //Setar o título
-        this.setTitle("EDASA - Algoritmo de Estimativa de Distribuição p/ Seleção de Atributos");
-
         //Atribuições Iniciais
         txtCodigo.setText(new tabProcessamento().ConsultarRegs());
         jspGeracoes.setValue(100);
@@ -613,8 +600,8 @@ public class FrmEdasa extends javax.swing.JDialog {
 
         //Se encontrou dados
         if (atributos != null) {
-            //Criar o Objeto
-            EdaSa objEdasa = new EdaSa();
+            //Criar ClsEdaSaeto
+            ClsEdaSa objEdasa = new ClsEdaSa();
             String colunas[] = new String[atributos.size()];
             int iLinhaTemp = atributos.get(0).getLinha();
             int iqtdLinhas = new tabAtributos().QtdLinhaProc(codigo);
@@ -697,6 +684,68 @@ public class FrmEdasa extends javax.swing.JDialog {
 
     }
 
+    //Leitura do diretório
+    private String leituraParamentros() {
+        //Declaração Variáveis e Objetos
+        String strRetorno = "";
+
+        //1° Linha - Caminho do Banco de Dados
+        //2° Linha - Usuário do Banco de Dados
+        //3° Linha - Senha do Banco de Dados 
+        //4° Linha - Diretório dos Arquivos a serem importados
+        try {
+            //Declaração Variáveis e Objetos
+            File arquivo = new File("ParamSelecaoAtributos.txt");
+
+            //Se o Arquivo Existe
+            if (arquivo.exists()) {
+                //Inicialização/Leitura dos Arquivos
+                FileReader leitor = new FileReader("ParamSelecaoAtributos.txt");
+                BufferedReader bufferDados = new BufferedReader(leitor);
+
+                //Declaração Veriáveis e Objetos
+                String linhaDados = "";
+                int ilinha = 1;
+
+                //Enquanto ler dados do Arquivo
+                while ((linhaDados = bufferDados.readLine()) != null) {
+                    //Se não for nulo os dados da linha
+                    if (linhaDados.trim() != "") {
+                        //Se for a linha do diretório
+                        if (ilinha == 4) {
+                            //Atribuição do diretório
+                            strRetorno = linhaDados;
+
+                        }
+
+                        //Atualizar a Linha
+                        ilinha += 1;
+
+                    }
+
+                }
+
+                //Fechar o leitor do Arquivo
+                leitor.close();
+                bufferDados.close();
+
+                //Liberar os Objetos
+                leitor = null;
+                bufferDados = null;
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        //Definir o retorno
+        return strRetorno;
+
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
@@ -709,7 +758,6 @@ public class FrmEdasa extends javax.swing.JDialog {
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JButton jbConsultar;
     private javax.swing.JButton jbImprimir;
-    private javax.swing.JButton jbListagem;
     private javax.swing.JButton jbProcessar;
     private javax.swing.JButton jbSair;
     private javax.swing.JButton jbSalvar;
