@@ -1,5 +1,16 @@
 package SelAtrib;
 
+import ConexaoBD.MontaGrid;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
+import weka.core.Instances;
+import weka.core.converters.ArffSaver;
+
 public class FrmExportDados extends javax.swing.JDialog {
 
     public FrmExportDados(java.awt.Frame parent, boolean modal) {
@@ -8,10 +19,10 @@ public class FrmExportDados extends javax.swing.JDialog {
 
         //Setar o título
         setTitle("Exportação/Consulta Informações Banco de Dados");
-        
+
         //Setar modal
         setModal(true);
-        
+
         //Tentar Centralizar
         setLocationRelativeTo(null);
 
@@ -27,10 +38,9 @@ public class FrmExportDados extends javax.swing.JDialog {
         jbSair = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblAtributos = new javax.swing.JTable();
+        jtaConsulta = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
+        jspGrid = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(911, 488));
@@ -39,7 +49,7 @@ public class FrmExportDados extends javax.swing.JDialog {
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
-        jbConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Pesquisar16X16.png"))); // NOI18N
+        jbConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Imprimir16X16.png"))); // NOI18N
         jbConsultar.setMnemonic('P');
         jbConsultar.setText("Consultar");
         jbConsultar.setToolTipText("Consultar Processamentos Efetuados");
@@ -56,7 +66,7 @@ public class FrmExportDados extends javax.swing.JDialog {
         });
         jToolBar2.add(jbConsultar);
 
-        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Salvar16X16.png"))); // NOI18N
+        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Salvar16X16.png"))); // NOI18N
         jbSalvar.setText("Salvar");
         jbSalvar.setToolTipText("Salvar Priocessamento");
         jbSalvar.setFocusable(false);
@@ -72,7 +82,7 @@ public class FrmExportDados extends javax.swing.JDialog {
         });
         jToolBar2.add(jbSalvar);
 
-        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Sair16X16.png"))); // NOI18N
+        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Sair16X16.png"))); // NOI18N
         jbSair.setText("Sair");
         jbSair.setToolTipText("Sair da Tela");
         jbSair.setFocusable(false);
@@ -90,23 +100,9 @@ public class FrmExportDados extends javax.swing.JDialog {
 
         jLabel1.setText("Instrução SQL");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
-
-        tblAtributos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        tblAtributos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane1.setViewportView(tblAtributos);
+        jtaConsulta.setColumns(20);
+        jtaConsulta.setRows(5);
+        jScrollPane2.setViewportView(jtaConsulta);
 
         jLabel3.setText("Resultado Consulta");
 
@@ -114,18 +110,15 @@ public class FrmExportDados extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 911, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 891, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jspGrid)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 891, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,22 +128,66 @@ public class FrmExportDados extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addGap(2, 2, 2)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jspGrid, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbSalvarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarjButton1ActionPerformed
+        //Declaração Variáveis e Objetos
+        Instances dados = null;
+        ArffSaver ExpDados = new ArffSaver();
+        ExpDados.setInstances(dados);
 
+        try {
+            //Declaração Variáveis e Objetos - Caminho do Arquivo
+            Date data = new Date();
+            
+            String lsCamArquivo = new FrmEdasa().leituraParametros() + "\\"+
+                    data.getYear()+data.getMonth()+data.getDay()+data.getHours()+
+                    data.getMinutes()+data.getSeconds();                    
+                                   
+            //Definição do Caminho do Arquivo
+            ExpDados.setFile(new File(lsCamArquivo));
+
+            //Gravar o Arquivo
+            ExpDados.writeBatch();
+
+            //Mensagem de Processamento
+            showMessageDialog(null, "Arquivo Salvo c/ sucesso. \n\r" + lsCamArquivo);
+
+        } catch (IOException ex ) {
+            showMessageDialog(null, "Erro Processamento.: " + ex.getMessage());
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmExportDados.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
 
     }//GEN-LAST:event_jbSalvarjButton1ActionPerformed
 
     private void jbConsultarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConsultarjButton1ActionPerformed
+        try {
+            //Executar a Consulta
+            MontaGrid Lactos = new MontaGrid(jtaConsulta.getText().trim());
+
+            //Montar o Grida na Tela
+            jspGrid.getViewport().add(Lactos, null);
+
+            //Repintar a Tela
+            this.getContentPane().validate();
+            this.getContentPane().repaint();
+
+        } catch (IOException ex) {
+            //Atribuir o Erro
+            showMessageDialog(null, "Erro no Processamento da Consulta. Erro.: " + ex.getMessage());
+
+        }
 
     }//GEN-LAST:event_jbConsultarjButton1ActionPerformed
 
@@ -162,13 +199,12 @@ public class FrmExportDados extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JButton jbConsultar;
     private javax.swing.JButton jbSair;
     private javax.swing.JButton jbSalvar;
-    private javax.swing.JTable tblAtributos;
+    private javax.swing.JScrollPane jspGrid;
+    private javax.swing.JTextArea jtaConsulta;
     // End of variables declaration//GEN-END:variables
 }

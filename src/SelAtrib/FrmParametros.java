@@ -113,7 +113,7 @@ public class FrmParametros extends javax.swing.JDialog {
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
-        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Salvar16X16.png"))); // NOI18N
+        jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Salvar16X16.png"))); // NOI18N
         jbSalvar.setText("Salvar");
         jbSalvar.setToolTipText("Salvar Priocessamento");
         jbSalvar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -130,7 +130,7 @@ public class FrmParametros extends javax.swing.JDialog {
         });
         jToolBar2.add(jbSalvar);
 
-        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SelAtrib/Imagens/Sair16X16.png"))); // NOI18N
+        jbSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Sair16X16.png"))); // NOI18N
         jbSair.setText("Sair");
         jbSair.setToolTipText("Sair da Tela");
         jbSair.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -232,7 +232,7 @@ public class FrmParametros extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, Short.MAX_VALUE)
                 .addGap(3, 3, 3))
         );
 
