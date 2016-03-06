@@ -151,7 +151,7 @@ public class PesqPadrao extends javax.swing.JDialog {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        JBtExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Pesquisar16X16.png"))); // NOI18N
+        JBtExecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Processar16x16.gif"))); // NOI18N
         JBtExecutar.setText("Pesquisar");
         JBtExecutar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,10 +159,10 @@ public class PesqPadrao extends javax.swing.JDialog {
             }
         });
 
-        JBtSelec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Processar16x16.gif"))); // NOI18N
+        JBtSelec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Imprimir16X16.png"))); // NOI18N
         JBtSelec.setText("Selecionar");
 
-        JBtFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jaselatrib/Imagens/Sair16X16.png"))); // NOI18N
+        JBtFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Sair16X16.png"))); // NOI18N
         JBtFechar.setText("Fechar");
         JBtFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
