@@ -1,5 +1,6 @@
-package ConexaoBD;
+package Classes;
 
+import ConexaoBD.ConexaoBD;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.table.*;

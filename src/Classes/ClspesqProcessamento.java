@@ -1,8 +1,6 @@
 package Classes;
 
 import ConexaoBD.*;
-import ConexaoBD.MontaGrid;
-import ConexaoBD.PesqPadrao;
 import java.awt.event.*;
 import java.io.IOException;
 import java.sql.SQLException;

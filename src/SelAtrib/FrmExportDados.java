@@ -1,6 +1,6 @@
 package SelAtrib;
 
-import ConexaoBD.MontaGrid;
+import Classes.MontaGrid;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -8,10 +8,17 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
+import weka.filters.Filter;
+import weka.filters.unsupervised.instance.NonSparseToSparse;
 
 public class FrmExportDados extends javax.swing.JDialog {
+
+    private MontaGrid Grid;
 
     public FrmExportDados(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -145,26 +152,67 @@ public class FrmExportDados extends javax.swing.JDialog {
         ExpDados.setInstances(dados);
 
         try {
-            //Declaração Variáveis e Objetos - Caminho do Arquivo
+            //Declaração Variáveis e Objetos 
+            FastVector colunas = new FastVector();
             Date data = new Date();
-            
-            String lsCamArquivo = new FrmEdasa().leituraParametros() + "\\"+
-                    data.getYear()+data.getMonth()+data.getDay()+data.getHours()+
-                    data.getMinutes()+data.getSeconds();                    
-                                   
+
+            double[] valores = null;
+
+            String lsnomeArq = data.toString().replace(":", "").replace("/", "").replace(".", "").replace("-", "").trim();
+            String lsCamArquivo = new FrmEdasa().leituraParametros() + "\\" + lsnomeArq;
+
+            ArffSaver arquivoARFF = new ArffSaver();
+
             //Definição do Caminho do Arquivo
             ExpDados.setFile(new File(lsCamArquivo));
+
+            //Percorrer todos os atributos(Colunas) do grid
+            for (int i = 0; i < Grid.tabela.getColumnCount(); i++) {
+                //Adicionar as colunas (nomes)
+                colunas.addElement(new Attribute(Grid.tabela.getColumnName(i)));
+
+            }
+
+            //Criar o DataSet de Dados (zerado)
+            Instances dsDados = new Instances("Dados", colunas, 0);
+
+            //Percorrer todas as linhas da tabela
+            for (int iLinha = 0; iLinha < Grid.tabela.getRowCount(); iLinha++) {
+                //Percorrer todas as colunas da tabela
+                for (int iColuna = 0; iColuna < Grid.tabela.getColumnCount(); iColuna++) {
+                    //Gravar a linha
+                    dsDados.add(new Instance(1, valores));
+
+                }
+                
+            }
+            
+            //NonSparseToSparse nonSparseToSparseInstance = new NonSparseToSparse();
+            //nonSparseToSparseInstance.setInputFormat(dsDados);
+            //Instances sparseDataset = Filter.useFilter(dsDados, nonSparseToSparseInstance);
+            //arffSaverInstance.setInstances(sparseDataset);
+            //Setar os dados
+            arquivoARFF.setInstances(dsDados);
+
+            //Definir o arquivo
+            arquivoARFF.setFile(new File(lsCamArquivo));
+
+            //Escrever o arquivo
+            arquivoARFF.writeBatch();
 
             //Gravar o Arquivo
             ExpDados.writeBatch();
 
-            //Mensagem de Processamento
+            //Mensagem de Processamento finalizado com sucesso
             showMessageDialog(null, "Arquivo Salvo c/ sucesso. \n\r" + lsCamArquivo);
 
-        } catch (IOException ex ) {
+        } catch (IOException ex) {
             showMessageDialog(null, "Erro Processamento.: " + ex.getMessage());
 
         } catch (SQLException ex) {
+            Logger.getLogger(FrmExportDados.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (Exception ex) {
             Logger.getLogger(FrmExportDados.class.getName()).log(Level.SEVERE, null, ex);
             
         }
@@ -175,11 +223,8 @@ public class FrmExportDados extends javax.swing.JDialog {
         try {
             //Executar a Consulta
             MontaGrid Lactos = new MontaGrid(jtaConsulta.getText().trim());
-
-            //Montar o Grida na Tela
             jspGrid.getViewport().add(Lactos, null);
 
-            //Repintar a Tela
             this.getContentPane().validate();
             this.getContentPane().repaint();
 

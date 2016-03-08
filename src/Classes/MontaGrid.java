@@ -1,4 +1,4 @@
-package ConexaoBD;
+package Classes;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package ConexaoBD;
+package Classes;
 
 import java.io.IOException;
 import java.sql.SQLException;
