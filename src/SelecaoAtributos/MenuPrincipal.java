@@ -1,4 +1,4 @@
-package SelAtrib;
+package SelecaoAtributos;
 
 import java.io.IOException;
 import java.sql.SQLException;

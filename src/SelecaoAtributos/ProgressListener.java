@@ -1,4 +1,4 @@
-package SelAtrib;
+package SelecaoAtributos;
 
 public interface ProgressListener {
 	public void incrementProgress(int amount);

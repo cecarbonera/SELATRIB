@@ -1,4 +1,4 @@
-package SelAtrib;
+package SelecaoAtributos;
 
 import Classes.ClsEdaSa;
 import Classes.ClsIndividuo;
@@ -219,38 +219,38 @@ public class FrmEdasa extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
+                                .addComponent(jspGeracoes, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(46, 46, 46)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jspQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblMellhorIndividuo)
+                                .addGap(238, 238, 238))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtArquivo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jspGeracoes, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(46, 46, 46)
-                                                .addComponent(jLabel5)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jspQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 656, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblMellhorIndividuo))))
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
-                .addContainerGap())
+                        .addComponent(jLabel3)
+                        .addContainerGap())))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 909, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,7 +274,7 @@ public class FrmEdasa extends javax.swing.JDialog {
                 .addGap(6, 6, 6)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblMellhorIndividuo)
                 .addGap(26, 26, 26))
@@ -284,15 +284,17 @@ public class FrmEdasa extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 1041, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 476, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -321,102 +323,90 @@ public class FrmEdasa extends javax.swing.JDialog {
             //Se confirmado o processament
             if (JOptionPane.showConfirmDialog(null, "Confirma o processamento dos Atributos ?",
                     "Atenção", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                //Declaração Variáveis e Objetos
-                Instances dados = new Instances(new ClsProcessamento(txtArquivo.getText()).lerArquivoDados());
-                String colunas[] = new String[dados.numAttributes()];
-                String[][] matrizDados = new String[Integer.parseInt(jspGeracoes.getValue().toString())][dados.numAttributes()];
-                ClsEdaSa objEdasa = new ClsEdaSa();
-                int nroGeracao = 1;
-
-                //ProgressPopup pgrsPopup = new ProgressPopup(this);
-                //pgrsPopup.init((int) jspGeracoes.getValue(), "Processando Arquivo de Dados...");
-
-                try {
-                    //Setar o valor
-                    colunas[0] = "Geração";
-
-                    //Percorrer todas as colunas
-                    for (int i = 0; i < dados.numAttributes() - 1; i++) {
-                        //Se for a primeira posição
-                        colunas[i + 1] = dados.attribute(i).name();
-
-                    }
-
-                    //Troca do cursor para Aguardando
-                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-                    //pgrsPopup.progress(0, (int) jspGeracoes.getValue());
-                    //pgrsPopup.setMessage("Gerando População Inicial...");
-
-                    //Geração da População Inicial
-                    objEdasa.GerarPopulacaoInicial(dados, 0, (int) jspQuantidade.getValue(), matrizDados);
-
-                    //Adicionar as colunas e os dados
-                    tblAtributos.setModel(new javax.swing.table.DefaultTableModel(matrizDados, colunas));
-
-                    //Formatar Colunas da Tabela de Atributos
-                    formatarColunasTabAtributos(tblAtributos);
-
-                    //Enquanto puder processar
-                    while (nroGeracao < (int) jspGeracoes.getValue()) {
-                        //Atualizar o processamento
-                        //pgrsPopup.progress(nroGeracao, (int) jspGeracoes.getValue());
-                        //pgrsPopup.setMessage("Gerando População.: " + nroGeracao + "...");
-
-                        //Gerar População
-                        objEdasa.GerarPopulacao(dados, nroGeracao, (int) jspQuantidade.getValue(), matrizDados);
-
-                        //Adicionar as colunas e os dados
-                        tblAtributos.setModel(new javax.swing.table.DefaultTableModel(matrizDados, colunas));
-
-                        //Formatar Colunas da Tabela de Atributos
-                        formatarColunasTabAtributos(tblAtributos);
-
-                        //Atualizar a posição
-                        nroGeracao += 1;
-
-                    }
-
-                    //Atualizar o processamento
-                    //pgrsPopup.progress(nroGeracao, (int) jspGeracoes.getValue());
-                    //pgrsPopup.setMessage("Processamento Final...Aguarde !");
-
-                    //Calcular a Média do Melhor indivíduo de todas as gerações, para dizer a eficiência do algoritmo(em parceiria com o método qualificador utilizado
-                    dados.stratify(ClsEdaSa._NroFolds);
-
-                    //Percorrer os folds
-                    for (int nFolds = 0; nFolds < ClsEdaSa._NroFolds; nFolds++) {
-                        //Definir respectivamente as "Divisões" dos Folds
-                        Instances treinamento = dados.trainCV(ClsEdaSa._NroFolds, nFolds);  //Pegar O COMPLEMENTO da divisão(90% DOS DADOS - Dados Complementares)
-                        ClsIndividuo[] dadosTemp = new ClsIndividuo[1];
-
-                        //Adicionar o registro
-                        dadosTemp[0] = ClsEdaSa.populacao[0];
+                //Thread de atualização dos dados
+                new Thread() {
+                    @Override
+                    public void run() {
+                        //Declaração Variáveis e Objetos
+                        Instances dados = new Instances(new ClsProcessamento(txtArquivo.getText()).lerArquivoDados());
+                        String colunas[] = new String[dados.numAttributes()];
+                        String[][] matrizDados = new String[Integer.parseInt(jspGeracoes.getValue().toString())][dados.numAttributes()];
+                        ClsEdaSa objEdasa = new ClsEdaSa();
+                        int nroGeracao = 1;
 
                         try {
-                            //Calcular o Fitness dos Inidivíduos
-                            objEdasa.CalcularFitness(dadosTemp, ClsEdaSa.populacao[0].getTamCromoss(), treinamento);
+                            //Setar o valor
+                            colunas[0] = "Geração";
+
+                            //Percorrer todas as colunas
+                            for (int i = 0; i < dados.numAttributes() - 1; i++) {
+                                //Se for a primeira posição
+                                colunas[i + 1] = dados.attribute(i).name();
+
+                            }
+
+                            //Geração da População Inicial
+                            objEdasa.GerarPopulacaoInicial(dados, 0, (int) jspQuantidade.getValue(), matrizDados);
+
+                            //Adicionar as colunas e os dados
+                            tblAtributos.setModel(new javax.swing.table.DefaultTableModel(matrizDados, colunas));
+
+                            //Formatar Colunas da Tabela de Atributos
+                            formatarColunasTabAtributos(tblAtributos);
+
+                            //Enquanto puder processar
+                            while (nroGeracao < (int) jspGeracoes.getValue()) {
+                                //Gerar População
+                                objEdasa.GerarPopulacao(dados, nroGeracao, (int) jspQuantidade.getValue(), matrizDados);
+
+                                //Adicionar as colunas e os dados
+                                tblAtributos.setModel(new javax.swing.table.DefaultTableModel(matrizDados, colunas));
+
+                                //Formatar Colunas da Tabela de Atributos
+                                formatarColunasTabAtributos(tblAtributos);
+
+                                //Atualizar a posição
+                                nroGeracao += 1;
+
+                            }
+
+                            //Atualizar o processamento
+                            dados.stratify(ClsEdaSa._NroFolds);
+
+                            //Percorrer os folds
+                            for (int nFolds = 0; nFolds < ClsEdaSa._NroFolds; nFolds++) {
+                                //Definir respectivamente as "Divisões" dos Folds
+                                Instances treinamento = dados.trainCV(ClsEdaSa._NroFolds, nFolds);  //Pegar O COMPLEMENTO da divisão(90% DOS DADOS - Dados Complementares)
+                                ClsIndividuo[] dadosTemp = new ClsIndividuo[1];
+
+                                //Adicionar o registro
+                                dadosTemp[0] = ClsEdaSa.populacao[0];
+
+                                try {
+                                    //Calcular o Fitness dos Inidivíduos
+                                    objEdasa.CalcularFitness(dadosTemp, ClsEdaSa.populacao[0].getTamCromoss(), treinamento);
+
+                                } catch (Exception ex) {
+                                    //  Logger.getLogger(jifEdasa.class.getName()).log(Level.SEVERE, null, ex);
+
+                                }
+
+                            }
+
+                            //Atualizar os Status dos botões
+                            ControlarBotoes("P");
+
+                            //Mensagem de processamento Finalizado
+                            showMessageDialog(null, "Processamento Finalizado c/ Sucesso !");
 
                         } catch (Exception ex) {
-                            //  Logger.getLogger(jifEdasa.class.getName()).log(Level.SEVERE, null, ex);
+                            //Logger.getLogger(jifEdasa.class.getName()).log(Level.SEVERE, null, ex);
 
                         }
 
                     }
 
-                    //Finalizar o popup
-                    //pgrsPopup.done();
-
-                    //Atualizar os Status dos botões
-                    ControlarBotoes("P");
-
-                    //Mensagem de processamento Finalizado
-                    showMessageDialog(null, "Processamento Finalizado c/ Sucesso !");
-
-                } catch (Exception ex) {
-                    //Logger.getLogger(jifEdasa.class.getName()).log(Level.SEVERE, null, ex);
-
-                }
+                }.start();
 
             } else {
                 //Atualizar os Status dos botões
@@ -428,6 +418,7 @@ public class FrmEdasa extends javax.swing.JDialog {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         }
+
     }//GEN-LAST:event_jbProcessarjButton1ActionPerformed
 
     private void jbSalvarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarjButton1ActionPerformed

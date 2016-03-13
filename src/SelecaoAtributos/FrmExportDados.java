@@ -1,24 +1,28 @@
-package SelAtrib;
+package SelecaoAtributos;
 
 import Classes.MontaGrid;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
-import weka.core.Attribute;
-import weka.core.FastVector;
-import weka.core.Instance;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
-import weka.filters.Filter;
-import weka.filters.unsupervised.instance.NonSparseToSparse;
+import weka.core.converters.CSVLoader;
 
 public class FrmExportDados extends javax.swing.JDialog {
 
-    private MontaGrid Grid;
+    //Declaração Variáveis e Objetos      
+    //private MontaGrid Grid;
+    private JTable tabelaConsulta;
 
     public FrmExportDados(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -146,62 +150,48 @@ public class FrmExportDados extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbSalvarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarjButton1ActionPerformed
-        //Declaração Variáveis e Objetos
-        Instances dados = null;
-        ArffSaver ExpDados = new ArffSaver();
-        ExpDados.setInstances(dados);
-
         try {
             //Declaração Variáveis e Objetos 
-            FastVector colunas = new FastVector();
-            Date data = new Date();
+            CSVLoader loader = new CSVLoader();
 
-            double[] valores = null;
+            Date dtAtual = new Date();
 
-            String lsnomeArq = data.toString().replace(":", "").replace("/", "").replace(".", "").replace("-", "").trim();
-            String lsCamArquivo = new FrmEdasa().leituraParametros() + "\\" + lsnomeArq;
+            String lsArquivo = dtAtual.toString().replace(":", "").replace("/", "").replace(".", "").replace("-", "");
+            String lsCamArquivo = (new FrmEdasa().leituraParametros() + "\\" + lsArquivo).trim();
 
+            //Gravar o arquivo em formato CSV
+            GravarArquivoCSV(this.tabelaConsulta, lsCamArquivo + ".CSV");
+
+            //Definiro caminho do arquivo CSV
+            File arquivoCSV = new File(lsCamArquivo + ".CSV");
+           
+            //Carregar arquivo CSV
+            loader.setSource(arquivoCSV);
+
+            //Setar as instâncias
+            Instances dados = loader.getDataSet();
+
+            //Salvar arquivo ARFF 
             ArffSaver arquivoARFF = new ArffSaver();
 
-            //Definição do Caminho do Arquivo
-            ExpDados.setFile(new File(lsCamArquivo));
-
-            //Percorrer todos os atributos(Colunas) do grid
-            for (int i = 0; i < Grid.tabela.getColumnCount(); i++) {
-                //Adicionar as colunas (nomes)
-                colunas.addElement(new Attribute(Grid.tabela.getColumnName(i)));
-
-            }
-
-            //Criar o DataSet de Dados (zerado)
-            Instances dsDados = new Instances("Dados", colunas, 0);
-
-            //Percorrer todas as linhas da tabela
-            for (int iLinha = 0; iLinha < Grid.tabela.getRowCount(); iLinha++) {
-                //Percorrer todas as colunas da tabela
-                for (int iColuna = 0; iColuna < Grid.tabela.getColumnCount(); iColuna++) {
-                    //Gravar a linha
-                    dsDados.add(new Instance(1, valores));
-
-                }
+            arquivoARFF.setInstances(dados);
+            arquivoARFF.setFile(new File(lsCamArquivo + ".arff"));
+            arquivoARFF.setDestination(new File(lsCamArquivo + ".arff"));
+            arquivoARFF.writeBatch();
+            
+            //Se for um arquivo válido
+            if (arquivoCSV.isFile()) {
+                //Excluir o Arquivo
+                arquivoCSV.delete();
                 
             }
-            
-            //NonSparseToSparse nonSparseToSparseInstance = new NonSparseToSparse();
-            //nonSparseToSparseInstance.setInputFormat(dsDados);
-            //Instances sparseDataset = Filter.useFilter(dsDados, nonSparseToSparseInstance);
-            //arffSaverInstance.setInstances(sparseDataset);
-            //Setar os dados
-            arquivoARFF.setInstances(dsDados);
 
-            //Definir o arquivo
-            arquivoARFF.setFile(new File(lsCamArquivo));
-
-            //Escrever o arquivo
-            arquivoARFF.writeBatch();
-
-            //Gravar o Arquivo
-            ExpDados.writeBatch();
+            //Liberar os objetos
+            arquivoARFF = null;
+            dados = null;
+            loader = null;
+            dtAtual = null;
+            lsArquivo = lsCamArquivo = null;
 
             //Mensagem de Processamento finalizado com sucesso
             showMessageDialog(null, "Arquivo Salvo c/ sucesso. \n\r" + lsCamArquivo);
@@ -214,16 +204,72 @@ public class FrmExportDados extends javax.swing.JDialog {
 
         } catch (Exception ex) {
             Logger.getLogger(FrmExportDados.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
 
     }//GEN-LAST:event_jbSalvarjButton1ActionPerformed
+
+    /*
+     Arquivo deverá ser salvo em formato TXT
+     */
+    public void GravarArquivoCSV(JTable tabela, String arquivo) throws IOException, ClassNotFoundException, SQLException {
+        //Declaração Variáveis e Objetos      
+        DefaultTableModel dtm = (DefaultTableModel) tabela.getModel();
+        Writer gravar = null;
+
+        try {
+            //Inicializar a Tabela (Aqruivo sempre deverá ser no format TXT)
+            gravar = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo), "utf-8"));
+
+            //Declaração Variáveis e Objetos
+            String colunasTabela = "";
+
+            //Percorrer todas as colunas
+            for (int j = 0; j < dtm.getColumnCount(); j++) {
+                //Montas as colunas
+                colunasTabela += dtm.getColumnName(j) + (j != dtm.getColumnCount() ? ", " : "");
+
+            }
+
+            //Gravar a linha do arquivo
+            gravar.write(colunasTabela + "\r\n");
+
+            //Percorrer as linhas
+            for (int i = 0; i < dtm.getRowCount(); i++) {
+                //Declaração Variáveis e Objetos
+                String linhaDados = "";
+
+                //Percorrer todas as colunas
+                for (int j = 0; j < dtm.getColumnCount(); j++) {
+                    //Montar a linhas
+                    linhaDados += dtm.getValueAt(i, j) + (j != dtm.getColumnCount() ? ", " : "");
+
+                }
+
+                //Gravar a linha de dados
+                gravar.write(linhaDados + "\r\n");
+
+            }
+
+        } finally {
+            //Finalizar o objeto
+            gravar.close();
+
+        }
+
+    }
 
     private void jbConsultarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConsultarjButton1ActionPerformed
         try {
             //Executar a Consulta
             MontaGrid Lactos = new MontaGrid(jtaConsulta.getText().trim());
             jspGrid.getViewport().add(Lactos, null);
+
+            //Inicializar o Objeto
+            this.tabelaConsulta = new JTable();
+
+            //Atribuir a tabela de dados (do resultSet)
+            this.tabelaConsulta = Lactos.tabela;
 
             this.getContentPane().validate();
             this.getContentPane().repaint();

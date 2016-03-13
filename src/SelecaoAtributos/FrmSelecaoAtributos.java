@@ -1,5 +1,5 @@
 
-package SelAtrib;
+package SelecaoAtributos;
 
 public class FrmSelecaoAtributos extends javax.swing.JDialog {
     

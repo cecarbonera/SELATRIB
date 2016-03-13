@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package SelAtrib;
+package SelecaoAtributos;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -12,7 +12,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.Popup;
