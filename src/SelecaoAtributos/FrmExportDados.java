@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -21,8 +22,7 @@ import weka.core.converters.CSVLoader;
 public class FrmExportDados extends javax.swing.JDialog {
 
     //Declaração Variáveis e Objetos      
-    //private MontaGrid Grid;
-    private JTable tabelaConsulta;
+    private MontaGrid Grid;   
 
     public FrmExportDados(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -33,6 +33,10 @@ public class FrmExportDados extends javax.swing.JDialog {
 
         //Setar modal
         setModal(true);
+
+        //Controlar Botões
+        jbSalvar.setEnabled(false);
+        jbConsultar.setEnabled(true);
 
         //Tentar Centralizar
         setLocationRelativeTo(null);
@@ -78,8 +82,8 @@ public class FrmExportDados extends javax.swing.JDialog {
         jToolBar2.add(jbConsultar);
 
         jbSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Salvar16X16.png"))); // NOI18N
-        jbSalvar.setText("Salvar");
-        jbSalvar.setToolTipText("Salvar Priocessamento");
+        jbSalvar.setText("Exportar");
+        jbSalvar.setToolTipText("Salvar Dados em Arquivo extensão arff");
         jbSalvar.setFocusable(false);
         jbSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jbSalvar.setMaximumSize(new java.awt.Dimension(70, 45));
@@ -151,50 +155,60 @@ public class FrmExportDados extends javax.swing.JDialog {
 
     private void jbSalvarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarjButton1ActionPerformed
         try {
-            //Declaração Variáveis e Objetos 
-            CSVLoader loader = new CSVLoader();
+            //Se confirmado o processament
+            if (JOptionPane.showConfirmDialog(null, "Confirma a Exportação dos Dados Consultados ?",
+                    "Atenção", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                //Declaração Variáveis e Objetos 
+                CSVLoader loader = new CSVLoader();
 
-            Date dtAtual = new Date();
+                String lsArquivo = "DADOS" + String.valueOf(Calendar.YEAR) + String.valueOf(Calendar.MONTH)
+                        + String.valueOf(Calendar.DAY_OF_MONTH) + String.valueOf(Calendar.HOUR)
+                        + String.valueOf(Calendar.MINUTE) + String.valueOf(Calendar.SECOND);
 
-            String lsArquivo = dtAtual.toString().replace(":", "").replace("/", "").replace(".", "").replace("-", "");
-            String lsCamArquivo = (new FrmEdasa().leituraParametros() + "\\" + lsArquivo).trim();
+                String lsCamArquivo = (new FrmEdasa().leituraParametros() + "\\" + lsArquivo).trim();
 
-            //Gravar o arquivo em formato CSV
-            GravarArquivoCSV(this.tabelaConsulta, lsCamArquivo + ".CSV");
+                //Gravar o arquivo em formato CSV
+                GravarArquivoCSV(Grid.tabela , lsCamArquivo + ".CSV");
 
-            //Definiro caminho do arquivo CSV
-            File arquivoCSV = new File(lsCamArquivo + ".CSV");
-           
-            //Carregar arquivo CSV
-            loader.setSource(arquivoCSV);
+                //Definiro caminho do arquivo CSV
+                File arquivoCSV = new File(lsCamArquivo + ".CSV");
 
-            //Setar as instâncias
-            Instances dados = loader.getDataSet();
+                //Carregar arquivo CSV
+                loader.setSource(arquivoCSV);
 
-            //Salvar arquivo ARFF 
-            ArffSaver arquivoARFF = new ArffSaver();
+                //Setar as instâncias
+                Instances dados = loader.getDataSet();
 
-            arquivoARFF.setInstances(dados);
-            arquivoARFF.setFile(new File(lsCamArquivo + ".arff"));
-            arquivoARFF.setDestination(new File(lsCamArquivo + ".arff"));
-            arquivoARFF.writeBatch();
-            
-            //Se for um arquivo válido
-            if (arquivoCSV.isFile()) {
-                //Excluir o Arquivo
-                arquivoCSV.delete();
+                //Salvar arquivo ARFF 
+                ArffSaver arquivoARFF = new ArffSaver();
+
+                arquivoARFF.setInstances(dados);
+                arquivoARFF.setFile(new File(lsCamArquivo + ".arff"));
                 
+                //Gravar o arquivo arff
+                arquivoARFF.writeBatch();
+
+                //Se for um arquivo válido
+                if (arquivoCSV.isFile()) {
+                    //Excluir o Arquivo
+                    arquivoCSV.delete();
+
+                }
+
+                //Liberar os objetos
+                arquivoARFF = null;
+                dados = null;
+                loader = null;
+                lsArquivo = lsCamArquivo = null;
+
+                //Controle dos botões
+                jbSalvar.setEnabled(false);
+                jbConsultar.setEnabled(true);
+
+                //Mensagem de Processamento finalizado com sucesso
+                showMessageDialog(null, "Arquivo.: " + lsCamArquivo + ".arff Salvo c/ sucesso.");
+
             }
-
-            //Liberar os objetos
-            arquivoARFF = null;
-            dados = null;
-            loader = null;
-            dtAtual = null;
-            lsArquivo = lsCamArquivo = null;
-
-            //Mensagem de Processamento finalizado com sucesso
-            showMessageDialog(null, "Arquivo Salvo c/ sucesso. \n\r" + lsCamArquivo);
 
         } catch (IOException ex) {
             showMessageDialog(null, "Erro Processamento.: " + ex.getMessage());
@@ -214,7 +228,6 @@ public class FrmExportDados extends javax.swing.JDialog {
      */
     public void GravarArquivoCSV(JTable tabela, String arquivo) throws IOException, ClassNotFoundException, SQLException {
         //Declaração Variáveis e Objetos      
-        DefaultTableModel dtm = (DefaultTableModel) tabela.getModel();
         Writer gravar = null;
 
         try {
@@ -225,9 +238,10 @@ public class FrmExportDados extends javax.swing.JDialog {
             String colunasTabela = "";
 
             //Percorrer todas as colunas
-            for (int j = 0; j < dtm.getColumnCount(); j++) {
+            for (int j = 0; j < tabela.getModel().getColumnCount(); j++) {
                 //Montas as colunas
-                colunasTabela += dtm.getColumnName(j) + (j != dtm.getColumnCount() ? ", " : "");
+                colunasTabela += tabela.getModel().getColumnName(j) +
+                        (j != tabela.getModel().getColumnCount() ? ", " : "");
 
             }
 
@@ -235,14 +249,15 @@ public class FrmExportDados extends javax.swing.JDialog {
             gravar.write(colunasTabela + "\r\n");
 
             //Percorrer as linhas
-            for (int i = 0; i < dtm.getRowCount(); i++) {
+            for (int i = 0; i < tabela.getModel().getRowCount(); i++) {
                 //Declaração Variáveis e Objetos
                 String linhaDados = "";
 
                 //Percorrer todas as colunas
-                for (int j = 0; j < dtm.getColumnCount(); j++) {
+                for (int j = 0; j < tabela.getModel().getColumnCount(); j++) {
                     //Montar a linhas
-                    linhaDados += dtm.getValueAt(i, j) + (j != dtm.getColumnCount() ? ", " : "");
+                    linhaDados += tabela.getModel().getValueAt(i, j) + (j != 
+                            tabela.getModel().getColumnCount() ? ", " : "");
 
                 }
 
@@ -262,14 +277,22 @@ public class FrmExportDados extends javax.swing.JDialog {
     private void jbConsultarjButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConsultarjButton1ActionPerformed
         try {
             //Executar a Consulta
-            MontaGrid Lactos = new MontaGrid(jtaConsulta.getText().trim());
-            jspGrid.getViewport().add(Lactos, null);
+            Grid = new MontaGrid(jtaConsulta.getText().trim());
+            jspGrid.getViewport().add(Grid, null);
 
             //Inicializar o Objeto
-            this.tabelaConsulta = new JTable();
+            //this.tabelaConsulta = new JTable();
 
             //Atribuir a tabela de dados (do resultSet)
-            this.tabelaConsulta = Lactos.tabela;
+            //this.tabelaConsulta = Lactos.tabela;
+
+            //Se encontrou linhas
+            if (Grid.tabela.getRowCount() > 0) {
+                //Controlar os botões
+                jbConsultar.setEnabled(false);
+                jbSalvar.setEnabled(true);
+
+            }
 
             this.getContentPane().validate();
             this.getContentPane().repaint();
