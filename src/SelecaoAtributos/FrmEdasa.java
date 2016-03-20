@@ -4,13 +4,11 @@ import Classes.ClsEdaSa;
 import Classes.ClsIndividuo;
 import Classes.ClsProcessamento;
 import Classes.ClspesqProcessamento;
+import Classes.clsFuncoes;
 import ConexaoBD.tabAtributos;
 import ConexaoBD.tabProcessamento;
-import java.awt.Color;
 import java.awt.Cursor;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -20,11 +18,9 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.JTable;
-import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import weka.core.Instances;
 
@@ -72,7 +68,7 @@ public class FrmEdasa extends javax.swing.JDialog {
         txtCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtArquivo = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btnSelArquivo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAtributos = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
@@ -183,12 +179,12 @@ public class FrmEdasa extends javax.swing.JDialog {
 
         jLabel2.setText("Arquivo:");
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton4.setText("....");
-        jButton4.setToolTipText("Localizar Arquivo");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnSelArquivo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnSelArquivo.setText("....");
+        btnSelArquivo.setToolTipText("Localizar Arquivo");
+        btnSelArquivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnSelArquivoActionPerformed(evt);
             }
         });
 
@@ -243,7 +239,7 @@ public class FrmEdasa extends javax.swing.JDialog {
                                 .addGap(238, 238, 238))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSelArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -263,7 +259,7 @@ public class FrmEdasa extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
+                    .addComponent(btnSelArquivo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -308,18 +304,21 @@ public class FrmEdasa extends javax.swing.JDialog {
             if (txtArquivo.getText().trim().equals("")) {
                 showMessageDialog(null, "Arquivo inválido.");
                 return;
+                
             }
 
             //Se Quantidade de indivíduos for vazio
             if ((int) jspQuantidade.getValue() <= 0) {
                 showMessageDialog(null, "Quantidade de indivíduos inválida.");
                 return;
+                
             }
 
             //Se Quantidade de indivíduos for vazio
             if ((int) jspGeracoes.getValue() <= 0) {
                 showMessageDialog(null, "Quantidade de gerações inválida.");
                 return;
+                
             }
 
             //Se confirmado o processament
@@ -529,7 +528,7 @@ public class FrmEdasa extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jbSairActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnSelArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelArquivoActionPerformed
         //Declaração Variáveis e Objetos
         JFileChooser file = new JFileChooser();
 
@@ -538,7 +537,7 @@ public class FrmEdasa extends javax.swing.JDialog {
         file.setDialogTitle("Selecione um arquivo");
 
         //Atribuir o local do diretório dos arquivos
-        file.setCurrentDirectory(new File(leituraParametros()));
+        file.setCurrentDirectory(new File(new clsFuncoes().leituraParametros()));
 
         //Inicialização
         txtArquivo.setText("");
@@ -552,7 +551,8 @@ public class FrmEdasa extends javax.swing.JDialog {
             txtArquivo.setText(arquivo.getPath());
 
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+        
+    }//GEN-LAST:event_btnSelArquivoActionPerformed
 
     //Controlar o status dos botoes
     private void ControlarBotoes(String opcao) {
@@ -694,69 +694,10 @@ public class FrmEdasa extends javax.swing.JDialog {
 
     }
 
-    //Leitura do diretório
-    public String leituraParametros() {
-        //Declaração Variáveis e Objetos
-        String strRetorno = "";
-
-        //1° Linha - Caminho do Banco de Dados
-        //2° Linha - Usuário do Banco de Dados
-        //3° Linha - Senha do Banco de Dados 
-        //4° Linha - Diretório dos Arquivos a serem importados
-        try {
-            //Declaração Variáveis e Objetos
-            File arquivo = new File("ParamSelecaoAtributos.txt");
-
-            //Se o Arquivo Existe
-            if (arquivo.exists()) {
-                //Inicialização/Leitura dos Arquivos
-                FileReader leitor = new FileReader("ParamSelecaoAtributos.txt");
-                BufferedReader bufferDados = new BufferedReader(leitor);
-
-                //Declaração Veriáveis e Objetos
-                String linhaDados = "";
-                int ilinha = 1;
-
-                //Enquanto ler dados do Arquivo
-                while ((linhaDados = bufferDados.readLine()) != null) {
-                    //Se não for nulo os dados da linha
-                    if (linhaDados.trim() != "") {
-                        //Se for a linha do diretório
-                        if (ilinha == 4) {
-                            //Atribuição do diretório
-                            strRetorno = linhaDados;
-
-                        }
-
-                        //Atualizar a Linha
-                        ilinha += 1;
-
-                    }
-
-                }
-
-                //Fechar o leitor do Arquivo
-                leitor.close();
-                bufferDados.close();
-
-                //Liberar os Objetos
-                leitor = null;
-                bufferDados = null;
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-
-        //Definir o retorno
-        return strRetorno;
-
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnSelArquivo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
