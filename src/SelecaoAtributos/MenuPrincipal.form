@@ -57,7 +57,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+G"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Gerar Modelo de Atributos"/>
+                <Property name="text" type="java.lang.String" value="Estimativa de Distribui&#xe7;&#xe3;o p/ Sele&#xe7;&#xe3;o de Atributos"/>
                 <Property name="toolTipText" type="java.lang.String" value="Gera&#xe7;&#xe3;o Modelo de Atributos (Leitura Arquivo Dados)"/>
               </Properties>
               <Events>
@@ -70,7 +70,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+A"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Sele&#xe7;&#xe3;o de Atributos"/>
+                <Property name="text" type="java.lang.String" value="Gerar Modelo de Atributos"/>
                 <Property name="toolTipText" type="java.lang.String" value="Sele&#xe7;&#xe3;o/Vincula&#xe7;&#xe3;o dos Atributos Processados"/>
               </Properties>
               <Events>

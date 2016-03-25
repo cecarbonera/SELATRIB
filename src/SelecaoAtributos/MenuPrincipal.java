@@ -68,7 +68,7 @@ public class MenuPrincipal extends JFrame {
         jMenu2.setText("Processamento");
 
         GerarModeloAtributos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
-        GerarModeloAtributos.setText("Gerar Modelo de Atributos");
+        GerarModeloAtributos.setText("Estimativa de Distribuição p/ Seleção de Atributos");
         GerarModeloAtributos.setToolTipText("Geração Modelo de Atributos (Leitura Arquivo Dados)");
         GerarModeloAtributos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,7 +83,7 @@ public class MenuPrincipal extends JFrame {
         jMenu2.add(GerarModeloAtributos);
 
         SelecaoAtributos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        SelecaoAtributos.setText("Seleção de Atributos");
+        SelecaoAtributos.setText("Gerar Modelo de Atributos");
         SelecaoAtributos.setToolTipText("Seleção/Vinculação dos Atributos Processados");
         SelecaoAtributos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,7 +175,7 @@ public class MenuPrincipal extends JFrame {
 
     private void SelecaoAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelecaoAtributosActionPerformed
         //Inicializar o Objeto
-        FrmSelecaoAtributos objFrmSelecaoAtributos = new FrmSelecaoAtributos(this, true);
+        FrmGerarModeloAtributos objFrmSelecaoAtributos = new FrmGerarModeloAtributos(this, true);
 
         //Tornar Visível
         objFrmSelecaoAtributos.setVisible(true);
